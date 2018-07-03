@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="EasyWSDLCodePrefixTrim(Java)" Height="201" Width="431" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button x:Name="pathButton" Content="Path" HorizontalAlignment="Left" Margin="337,11,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.76,-0.045" Click="Button_Click"/>
+        <Button x:Name="pathButton" Content="Path" Margin="337,11,13,0" VerticalAlignment="Top" RenderTransformOrigin="0.76,-0.045" Click="Button_Click"/>
         <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Height="57" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="302" IsEnabled="False" Focusable="False"/>
         <TextBox x:Name="prefixTextBox" HorizontalAlignment="Left" Height="23" Margin="95,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Prefix" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Width="62"/>
