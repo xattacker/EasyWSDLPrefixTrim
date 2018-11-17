@@ -12,7 +12,7 @@ Before:<br>
 ![avatar](/rm_res/before2.png)<br>
 <br><br>
 
-After:<br>
+After Trimmed:<br>
 ![avatar](/rm_res/trim.png)<br>
 ![avatar](/rm_res/after.png)<br>
 ![avatar](/rm_res/after2.png)<br>
