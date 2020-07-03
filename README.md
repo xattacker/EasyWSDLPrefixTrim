@@ -5,7 +5,9 @@ generated java code
 
 
 ### Usage:
-execute the exe file, select the source code folder(with java code inside).
+execute the exe file, 
+choice program language (java / swift)
+select the source code folder(with code file inside).
 It will catch the random prefix name, and click button "trim" to trim the class prefix<br><br>
 
 ### Before:
