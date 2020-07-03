@@ -15,22 +15,30 @@ namespace EasyWSDLPrefixTrim
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            string path = this.GetAppPath();
-            if (this.SetTrimPrefix(path))
-            {
-                this.pathTextBox.Text = path;
-            }
+        private string GetSelectedLanguage()
+        {
+            return this.javaRadioButton.IsChecked.Value ? "java" : this.swiftRadioButton.IsChecked.Value ? "swift" : null;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string lang = this.GetSelectedLanguage();
+            if (string.IsNullOrEmpty(lang))
+            {
+                this.ShowMessage("請選擇程式語言!!");
+
+                return;
+            }
+
+
             // 按下 path
             this.OpenFolderDialog
             (
             (string path) =>
             {
-                if (this.SetTrimPrefix(path))
+                if (this.SetTrimPrefix(path, lang))
                 {
                     this.pathTextBox.Text = path;
                 }
@@ -45,6 +53,14 @@ namespace EasyWSDLPrefixTrim
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             // 按下 trim 
+            string lang = this.GetSelectedLanguage();
+            if (string.IsNullOrEmpty(lang))
+            {
+                this.ShowMessage("請選擇程式語言!!");
+
+                return;
+            }
+
             if (string.IsNullOrEmpty(this.pathTextBox.Text) || string.IsNullOrEmpty(this.prefixTextBox.Text))
             {
                 this.ShowMessage("路徑與Prefix不可為空!!");
@@ -69,16 +85,16 @@ namespace EasyWSDLPrefixTrim
                                     );
             if (result == System.Windows.Forms.DialogResult.Yes)
             {
-                this.TrimCode(path, this.prefixTextBox.Text.Trim());
+                this.TrimCode(path, this.prefixTextBox.Text.Trim(), lang);
             }
         }
 
-        private bool SetTrimPrefix(string path)
+        private bool SetTrimPrefix(string path, string lang)
         {
             bool succeed = true;
 
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<FileInfo> files = dir.GetFilesByExtensions(".java");
+            List<FileInfo> files = dir.GetFilesByExtensions("." + lang);
             if (files.Count > 0)
             {
                 FileInfo file = files[0];
@@ -92,12 +108,12 @@ namespace EasyWSDLPrefixTrim
             return succeed;
         }
 
-        private void TrimCode(string path, string prefix)
+        private void TrimCode(string path, string prefix, string lang)
         {
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(path);
-                List<FileInfo> files = dir.GetFilesByExtensions(".java");
+                List<FileInfo> files = dir.GetFilesByExtensions("." + lang);
                 List<FileInfo> deleted = new List<FileInfo>();
 
                 prefix = prefix.ToUpper();
@@ -107,13 +123,32 @@ namespace EasyWSDLPrefixTrim
                     if (file.Name.StartsWith(prefix))
                     {
                         string new_path = System.IO.Path.Combine(file.DirectoryName, file.Name.Remove(0, prefix.Length));
-
                         string content = File.ReadAllText(file.FullName);
-                        content = content.Replace(" " + prefix, " ");
-                        content = content.Replace("(" + prefix, "(");
-                        content = content.Replace(")" + prefix, ")");
-                        content = content.Replace("," + prefix, ",");
-                        content = content.Replace("=" + prefix, "=");
+
+                        switch (lang)
+                        {
+                            case "java":
+                                {
+                                    content = content.Replace(" " + prefix, " ");
+                                    content = content.Replace("(" + prefix, "(");
+                                    content = content.Replace(")" + prefix, ")");
+                                    content = content.Replace("," + prefix, ",");
+                                    content = content.Replace("=" + prefix, "=");
+                                }
+                                break;
+
+                            case "swift":
+                                {
+                                    content = content.Replace(" " + prefix, " ");
+                                    content = content.Replace(":" + prefix, ":");
+                                    content = content.Replace("(" + prefix, "(");
+                                    content = content.Replace("," + prefix, ",");
+                                    content = content.Replace("!" + prefix, "!");
+                                    content = content.Replace("=" + prefix, "=");
+                                }
+                                break;
+                        }
+
                         File.WriteAllText(new_path, content);
 
                         deleted.Add(file);
