@@ -1,6 +1,6 @@
 ﻿# project EasyWSDLPrefixTrim:
 <br>
-trim the prefix name from EasyWSDL(http://easywsdl.com/)
+trim the random prefix name from EasyWSDL(http://easywsdl.com/)
 generated java code
 
 
